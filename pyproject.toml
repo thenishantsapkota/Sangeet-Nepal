@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "Sangeet Nepal"
+version = "0.1.0-alpha.1"
+description = "A music bot for Nepali Discord Servers that helps people to listen to Music better"
+authors = ["Nishant Sapkota <snishant306@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+hikari = "^2.0.0-alpha.106"
+hikari-lightbulb = "^2.2.0"
+pydantic = {extras = ["dotenv"], version = "^1.9.0"}
+hikari-miru = "^1.0.1"
+lavasnek-rs = "^0.1.0-alpha.4"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.18.1"}
+aerich = "0.5.3"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
