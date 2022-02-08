@@ -6,13 +6,9 @@ import lightbulb
 import miru
 from miru.ext import nav
 
-from . import _chunk, fetch_lavalink, join, leave
+from . import MusicError, _chunk, check_voice_state, fetch_lavalink, join, leave
 
 music = lightbulb.Plugin("Music", "Music Commands")
-
-
-class MusicError(lightbulb.LightbulbError):
-    pass
 
 
 @music.command
@@ -34,6 +30,7 @@ async def join_command(ctx: lightbulb.Context) -> None:
     "Make the bot leave the voice channel",
 )
 @lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
 async def leave_command(ctx: lightbulb.Context) -> None:
     await leave(ctx)
     await ctx.respond(
@@ -96,6 +93,7 @@ async def play_command(ctx: lightbulb.Context) -> None:
 @music.command
 @lightbulb.command("clear", "Clear the current queue")
 @lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
 async def clear_command(ctx: lightbulb.Context) -> None:
     await leave(ctx)
     await join(ctx)
@@ -154,6 +152,45 @@ async def queue_command(ctx: lightbulb.Context) -> None:
     navigator = nav.NavigatorView(pages=fields)
     await navigator.send(ctx.interaction)
     await navigator.wait()
+
+
+@music.command
+@lightbulb.command("pause", "Pause the currently playing track")
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def pause_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    if not node or not node.now_playing:
+        raise MusicError("No tracks are playing currently!")
+
+    if node.is_paused:
+        raise MusicError(
+            "How are you expecting me to pause something that's already paused?"
+        )
+    await lavalink.pause(ctx.guild_id)
+    await lavalink.set_pause(ctx.guild_id, True)
+
+    await ctx.respond(embed=hikari.Embed(description="⏸️ Paused", color=0x00FF00))
+
+
+@music.command
+@lightbulb.command("resume", "Resume the currently paused song")
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def resume_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    if not node or not node.now_playing:
+        raise MusicError("No tracks are playing currently!")
+
+    if not node.is_paused:
+        raise MusicError("Don't make me resume something that's not paused 😠")
+
+    await lavalink.resume(ctx.guild_id)
+    await ctx.respond(
+        embed=hikari.Embed(description="🎵 Playback resumed.", color=0x00FF00)
+    )
 
 
 def load(bot: lightbulb.BotApp) -> None:
