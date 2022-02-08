@@ -82,6 +82,23 @@ class Controls(miru.View):
         await self.message.edit(components=self.build())
         await ctx.respond("Skipped!", flags=hikari.MessageFlag.EPHEMERAL)
 
+    @miru.select(
+        placeholder="Volume",
+        options=[miru.SelectOption(label=x * 10) for x in range(1, 11)],
+    )
+    async def volume_select(self, select: miru.Select, ctx: miru.Context) -> None:
+        lavalink = fetch_lavalink(music.bot)
+        node = await lavalink.get_guild_node(ctx.guild_id)
+        if not node or not node.now_playing:
+            return await ctx.respond(
+                "Nothing is playing..", flags=hikari.MessageFlag.EPHEMERAL
+            )
+        await lavalink.volume(ctx.guild_id, int(select.values[0]))
+        await ctx.respond(
+            "Volume set to {}%".format(select.values[0]),
+            flags=hikari.MessageFlag.EPHEMERAL,
+        )
+
     async def view_check(self, ctx: miru.Context) -> bool:
         if not ctx.user.id == self.author_id:
             await ctx.respond(
