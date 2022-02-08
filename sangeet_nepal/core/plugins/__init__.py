@@ -1,5 +1,38 @@
+import typing as t
+
 import lavasnek_rs
 import lightbulb
+
+
+class MusicError(lightbulb.LightbulbError):
+    ...
+
+
+_ValueT = t.TypeVar("_ValueT")
+T = t.TypeVar("T")
+R = t.TypeVar("R")
+
+
+def check_voice_state(f: t.Callable[..., R]) -> t.Callable[..., t.Awaitable[R]]:
+    async def predicate(ctx: lightbulb.Context, *args: object, **kwargs: object) -> R:
+        voice_state_bot = ctx.bot.cache.get_voice_state(ctx.guild_id, ctx.bot.get_me())
+        voice_state_author = ctx.bot.cache.get_voice_state(ctx.guild_id, ctx.author)
+
+        if voice_state_bot is None:
+            raise MusicError(
+                "I am not connected to any voice channel.\nUse {}join to connect me to one.".format(
+                    ctx.prefix
+                )
+            )
+        if voice_state_author is None:
+            raise MusicError("Connect to a voice channel to continue!")
+
+        if not voice_state_author.channel_id == voice_state_bot.channel_id:
+            raise MusicError("You and I are not in the same voice channel.")
+
+        return await f(ctx, *args, **kwargs)
+
+    return predicate
 
 
 def fetch_lavalink(bot: lightbulb.BotApp) -> lavasnek_rs.Lavalink:
@@ -39,4 +72,14 @@ async def leave(ctx: lightbulb.Context) -> None:
     await lavalink.remove_guild_node(ctx.guild_id)
     await lavalink.remove_guild_from_loops(ctx.guild_id)
 
-    await ctx.respond("Disconnected from voice!")
+
+def _chunk(iterator: t.Iterator[_ValueT], max: int) -> t.Iterator[list[_ValueT]]:
+    chunk: list[_ValueT] = []
+    for entry in iterator:
+        chunk.append(entry)
+        if len(chunk) == max:
+            yield chunk
+            chunk = []
+
+    if chunk:
+        yield chunk
