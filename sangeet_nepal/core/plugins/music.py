@@ -264,7 +264,7 @@ async def move_song_command(ctx: lightbulb.Context) -> None:
 
 
 @song.child
-@lightbulb.option("index", "Index of the song to be removed")
+@lightbulb.option("index", "Index of the song to be removed", type=int)
 @lightbulb.command("remove", "Remove the song at the specified index from the queue")
 @lightbulb.implements(lightbulb.SlashSubCommand)
 @check_voice_state
