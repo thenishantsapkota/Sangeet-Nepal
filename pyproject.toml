@@ -10,7 +10,7 @@ python = ">=3.10,<3.11"
 hikari = "^2.0.0-alpha.106"
 hikari-lightbulb = "^2.2.0"
 pydantic = {extras = ["dotenv"], version = "^1.9.0"}
-hikari-miru = "^1.0.1"
+hikari-miru = "^1.1.1"
 lavasnek-rs = "^0.1.0-alpha.4"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.18.1"}
 aerich = "0.5.3"

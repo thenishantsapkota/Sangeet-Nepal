@@ -231,14 +231,14 @@ crontrigger = ["croniter (>=1.2.0,<1.3.0)", "types-croniter (>=1.0.7,<1.1.0)"]
 
 [[package]]
 name = "hikari-miru"
-version = "1.0.1"
+version = "1.1.1"
 description = "An alternative component handler for hikari, inspired by discord.py's views."
 category = "main"
 optional = false
 python-versions = ">=3.8.0,<3.11"
 
 [package.dependencies]
-colorama = "*"
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
 hikari = ">=2.0.0.dev106"
 
 [package.extras]
@@ -427,7 +427,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "c6a169e537a4983f5d0428fd084e3fada916862311f57da6f402f7838369db0c"
+content-hash = "ed4f4daa5b94c72b2157cf6c3dfac7a2da6185ab6382c5804c7378a87833e0e4"
 
 [metadata.files]
 aerich = [
@@ -650,8 +650,8 @@ hikari-lightbulb = [
     {file = "hikari_lightbulb-2.2.0-py3-none-any.whl", hash = "sha256:38b272006155a8ae8605b813225a3a5f033da509f9a5329e2d5521acdd414e22"},
 ]
 hikari-miru = [
-    {file = "hikari-miru-1.0.1.tar.gz", hash = "sha256:737aeedcfdd5ff90eee01781c01a08f9335b159eb9450a26bf7a2d463affeba2"},
-    {file = "hikari_miru-1.0.1-py3-none-any.whl", hash = "sha256:e310238856a19818c973218fb6b226bb10c3e556087251b72266e2480aa6cd48"},
+    {file = "hikari-miru-1.1.1.tar.gz", hash = "sha256:7d9ff975546e963cb0b3f234d3396990dc20d0569a70f42135c3b8a16880bd20"},
+    {file = "hikari_miru-1.1.1-py3-none-any.whl", hash = "sha256:f5aec9b7ce3672433d71e1076f64384e13ac24d687d667bd5c9db4ee38185aa0"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
