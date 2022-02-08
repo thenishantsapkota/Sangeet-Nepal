@@ -1,3 +1,4 @@
+import random
 from datetime import datetime
 
 import hikari
@@ -190,6 +191,27 @@ async def resume_command(ctx: lightbulb.Context) -> None:
     await lavalink.resume(ctx.guild_id)
     await ctx.respond(
         embed=hikari.Embed(description="🎵 Playback resumed.", color=0x00FF00)
+    )
+
+
+@music.command
+@lightbulb.command("shuffle", "Shuffle the queue")
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def shuffle_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+
+    if not len(node.queue) > 1:
+        raise MusicError("Only one song in the queue, can't shuffle")
+    queue = node.queue[1:]
+    random.shuffle(queue)
+    queue.insert(0, node.queue[0])
+
+    node.queue = queue
+    await lavalink.set_guild_node(ctx.guild_id, node)
+    await ctx.respond(
+        embed=hikari.Embed(description="🔀 Queue shuffled successfully!", color=0x00FF00)
     )
 
 
