@@ -5,11 +5,99 @@ import hikari
 import lavasnek_rs
 import lightbulb
 import miru
+from click import style
 from miru.ext import nav
 
 from . import MusicError, _chunk, check_voice_state, fetch_lavalink, join, leave
 
 music = lightbulb.Plugin("Music", "Music Commands")
+
+
+class Controls(miru.View):
+    def __init__(self, author_id: hikari.Snowflake) -> None:
+        self.author_id = author_id
+        super().__init__(timeout=120)
+
+    @miru.button(label="Play/Pause", style=hikari.ButtonStyle.SUCCESS)
+    async def play_pause_button(self, _: miru.Button, ctx: miru.Context) -> None:
+        lavalink = fetch_lavalink(music.bot)
+        node = await lavalink.get_guild_node(ctx.guild_id)
+        if not node or not node.now_playing:
+            return await ctx.respond(
+                "Nothing playing at the moment!", flags=hikari.MessageFlag.EPHEMERAL
+            )
+        if node.is_paused:
+            await lavalink.resume(ctx.guild_id)
+            await lavalink.set_pause(ctx.guild_id, False)
+            await ctx.respond(
+                content="Resumed!",
+                flags=hikari.MessageFlag.EPHEMERAL,
+            )
+        else:
+            await lavalink.pause(ctx.guild_id)
+            await lavalink.set_pause(ctx.guild_id, True)
+            await ctx.respond(
+                content="Paused!",
+                flags=hikari.MessageFlag.EPHEMERAL,
+            )
+
+    @miru.button(label="Re-Queue", style=hikari.ButtonStyle.PRIMARY)
+    async def requeue_button(self, button: miru.Button, ctx: miru.Context) -> None:
+        lavalink = fetch_lavalink(music.bot)
+        node = await lavalink.get_guild_node(ctx.guild_id)
+        queue = node.queue
+        try:
+            now_playing = queue[0]
+            queue.insert(1, now_playing)
+        except IndexError:
+            button.disabled = True
+            await self.message.edit(components=self.build())
+            return await ctx.respond(
+                "No song could be found to requeue!", flags=hikari.MessageFlag.EPHEMERAL
+            )
+        node.queue = queue
+        await lavalink.set_guild_node(ctx.guild_id, node)
+        button.disabled = True
+        await self.message.edit(components=self.build())
+        await ctx.respond(
+            content="Added the song to the queue again!",
+            flags=hikari.MessageFlag.EPHEMERAL,
+        )
+
+    @miru.button(label="Skip", style=hikari.ButtonStyle.DANGER)
+    async def skip_button(self, button: miru.Button, ctx: miru.Context) -> None:
+        lavalink = fetch_lavalink(music.bot)
+        skip = await lavalink.skip(ctx.guild_id)
+        node = await lavalink.get_guild_node(ctx.guild_id)
+
+        if not skip:
+            return await ctx.respond(
+                "I don't see any tracks to skip 😕", flags=hikari.MessageFlag.EPHEMERAL
+            )
+
+        if not node.queue and not node.now_playing:
+            await lavalink.stop(ctx.guild_id)
+
+        button.disabled = True
+        await self.message.edit(components=self.build())
+        await ctx.respond("Skipped!", flags=hikari.MessageFlag.EPHEMERAL)
+
+    async def view_check(self, ctx: miru.Context) -> bool:
+        if not ctx.user.id == self.author_id:
+            await ctx.respond(
+                embed=hikari.Embed(
+                    description="This belongs to <@{}>".format(self.author_id),
+                    color=0xFF0000,
+                ),
+                flags=hikari.MessageFlag.EPHEMERAL,
+            )
+        return ctx.user.id == self.author_id
+
+    async def on_timeout(self) -> None:
+        for child in self.children:
+            child.disabled = True
+
+        await self.message.edit(components=self.build())
 
 
 @music.command
@@ -301,8 +389,9 @@ async def remove_song_command(ctx: lightbulb.Context) -> None:
 @music.command
 @lightbulb.command("nowplaying", "See currently playing track's info")
 @lightbulb.implements(lightbulb.SlashCommand)
-async def nowplaying(ctx: lightbulb.Context) -> None:
+async def nowplaying_command(ctx: lightbulb.Context) -> None:
     lavalink = fetch_lavalink(ctx.bot)
+    view = Controls(author_id=ctx.author.id)
     node = await lavalink.get_guild_node(ctx.guild_id)
 
     if not node or not node.now_playing:
@@ -319,7 +408,10 @@ async def nowplaying(ctx: lightbulb.Context) -> None:
     ]
     for name, value, inline in fields:
         embed.add_field(name=name, value=value, inline=inline)
-    await ctx.respond(embed=embed)
+    response = await ctx.respond(embed=embed, components=view.build())
+    message = await response.message()
+    view.start(message)
+    await view.wait()
 
 
 @music.command
