@@ -322,6 +322,29 @@ async def nowplaying(ctx: lightbulb.Context) -> None:
     await ctx.respond(embed=embed)
 
 
+@music.command
+@lightbulb.command("skip", "Skip the currently playing song")
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def skip_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+
+    skip = await lavalink.skip(ctx.guild_id)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+
+    if not skip:
+        raise MusicError("There's nothing to skip!")
+
+    if not node.queue and not node.now_playing:
+        await lavalink.stop(ctx.guild_id)
+    await ctx.respond(
+        embed=hikari.Embed(
+            title="⏭️ Skipped",
+            description=f"[{skip.track.info.title}]({skip.track.info.uri})",
+        )
+    )
+
+
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(music)
     miru.load(bot)
