@@ -215,6 +215,113 @@ async def shuffle_command(ctx: lightbulb.Context) -> None:
     )
 
 
+@music.command
+@lightbulb.command("stop", "Stop the playback")
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def stop_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    await lavalink.stop(ctx.guild_id)
+    await ctx.respond(
+        embed=hikari.Embed(description="⏹️ Stopped the Playback!", color=0x00FF00)
+    )
+
+
+@music.command
+@lightbulb.command("song", "Command Group for tasks related to songs")
+@lightbulb.implements(lightbulb.SlashCommandGroup)
+async def song(ctx: lightbulb.Context) -> None:
+    await ctx.bot.help_command.send_group_help(ctx, ctx.command)
+
+
+@song.child
+@lightbulb.option("new_index", "New index for the song", type=int)
+@lightbulb.option("old_index", "Old index of the song", type=int)
+@lightbulb.command("move", "Move song to specific index in the queue.")
+@lightbulb.implements(lightbulb.SlashSubCommand)
+@check_voice_state
+async def move_song_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    if not len(node.queue) >= 1:
+        raise MusicError("Only one song in the queue!")
+    queue = node.queue
+    song_to_be_moved = queue[ctx.options.old_index]
+    try:
+        queue.pop(ctx.options.old_index)
+        queue.insert(ctx.options.new_index, song_to_be_moved)
+    except KeyError:
+        raise MusicError("No song could be found at the specified index.")
+
+    node.queue = queue
+    await lavalink.set_guild_node(ctx.guild_id, node)
+    await ctx.respond(
+        embed=hikari.Embed(
+            description=f"Moved `{song_to_be_moved.track.info.title}` to Position `{ctx.options.new_index}`",
+            color=0x00FF00,
+        )
+    )
+
+
+@song.child
+@lightbulb.option("index", "Index of the song to be removed")
+@lightbulb.command("remove", "Remove the song at the specified index from the queue")
+@lightbulb.implements(lightbulb.SlashSubCommand)
+@check_voice_state
+async def remove_song_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    index: int = ctx.options.index
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    if not node.queue:
+        raise MusicError("There are no songs in the queue!")
+
+    if index == 0:
+        raise MusicError(
+            "Cannot remove a currently playing song\nUse {}skip to skip the song".format(
+                ctx.prefix
+            )
+        )
+    queue = node.queue
+    song_to_remove = queue[index]
+    try:
+        queue.pop(index)
+    except KeyError:
+        raise MusicError("No song could be found at the specified index.")
+
+    node.queue = queue
+    await lavalink.set_guild_node(ctx.guild_id, node)
+    await ctx.respond(
+        embed=hikari.Embed(
+            description=f"Removed `{song_to_remove.track.info.title}` from the queue.",
+            color=0x00FF00,
+        )
+    )
+
+
+@music.command
+@lightbulb.command("nowplaying", "See currently playing track's info")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def nowplaying(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+
+    if not node or not node.now_playing:
+        raise MusicError("There's nothing playing at the moment!")
+
+    embed = hikari.Embed(
+        title="Now Playing",
+        description=f"[{node.now_playing.track.info.title}]({node.now_playing.track.info.uri})",
+        color=0x00FF00,
+    )
+    fields = [
+        ("Requested by", f"<@{node.now_playing.requester}>", True),
+        ("Author", node.now_playing.track.info.author, True),
+    ]
+    for name, value, inline in fields:
+        embed.add_field(name=name, value=value, inline=inline)
+    await ctx.respond(embed=embed)
+
+
 def load(bot: lightbulb.BotApp) -> None:
     bot.add_plugin(music)
     miru.load(bot)
