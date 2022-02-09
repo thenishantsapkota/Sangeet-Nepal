@@ -420,6 +420,7 @@ async def remove_song_command(ctx: lightbulb.Context) -> None:
 @music.command
 @lightbulb.command("nowplaying", "See currently playing track's info")
 @lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
 async def nowplaying_command(ctx: lightbulb.Context) -> None:
     lavalink = fetch_lavalink(ctx.bot)
     view = Controls(author_id=ctx.author.id)
