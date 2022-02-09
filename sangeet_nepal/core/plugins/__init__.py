@@ -1,7 +1,9 @@
 import typing as t
 
+import hikari
 import lavasnek_rs
 import lightbulb
+from sangeet_nepal.core.utils.spotify import SpotifyHandler
 
 
 class MusicError(lightbulb.LightbulbError):
@@ -83,3 +85,26 @@ def _chunk(iterator: t.Iterator[_ValueT], max: int) -> t.Iterator[list[_ValueT]]
 
     if chunk:
         yield chunk
+
+
+async def handle_spotify_player(ctx: lightbulb.Context, url: str) -> None:
+    spotify = SpotifyHandler()
+    lavalink = fetch_lavalink(ctx.bot)
+    songs = await spotify.handle_spotify_url(url)
+    await ctx.respond(
+        embed=hikari.Embed(
+            description="Adding `{}` songs to the queue!".format(len(songs)),
+            color=0x00FF00,
+        )
+    )
+    if not songs:
+        raise MusicError("Couldn't find anything!")
+
+    for song in songs:
+        query_information = await lavalink.auto_search_tracks(song)
+        try:
+            await lavalink.play(ctx.guild_id, query_information.tracks[0]).requester(
+                ctx.author.id
+            ).queue()
+        except lavasnek_rs.NoSessionPresent:
+            raise MusicError("It seems I got disconnected from the Voice Channel!")

@@ -8,7 +8,15 @@ import miru
 from click import style
 from miru.ext import nav
 
-from . import MusicError, _chunk, check_voice_state, fetch_lavalink, join, leave
+from . import (
+    MusicError,
+    _chunk,
+    check_voice_state,
+    fetch_lavalink,
+    handle_spotify_player,
+    join,
+    leave,
+)
 
 music = lightbulb.Plugin("Music", "Music Commands")
 
@@ -155,6 +163,10 @@ async def play_command(ctx: lightbulb.Context) -> None:
     if not connection_info:
         await join(ctx)
 
+    if "https://open.spotify.com" in query:
+        await handle_spotify_player(ctx, query)
+        return
+
     query_information = await lavalink.auto_search_tracks(query)
     playlist = False
     if query_information.playlist_info.name:
@@ -213,12 +225,14 @@ async def clear_command(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.SlashCommand)
 async def queue_command(ctx: lightbulb.Context) -> None:
     lavalink = fetch_lavalink(ctx.bot)
+    length = 0
     song_queue = []
     node = await lavalink.get_guild_node(ctx.guild_id)
     if not node or not node.queue:
         raise MusicError("There are no tracks in the queue.")
 
     for song in node.queue:
+        length += song.track.info.length
         song_queue += [
             f"[{song.track.info.title}]({song.track.info.uri}) [<@{song.requester}>]"
         ]
