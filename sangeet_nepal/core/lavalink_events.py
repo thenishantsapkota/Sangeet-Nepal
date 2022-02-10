@@ -58,6 +58,14 @@ class LavalinkEvents:
                 await lavalink.stop(event.guild_id)
 
     async def track_stuck(
-        self, _: lavasnek_rs.Lavalink, event: lavasnek_rs.TrackStuck
+        self, lavalink: lavasnek_rs.Lavalink, event: lavasnek_rs.TrackStuck
     ) -> None:
         logger.warning("Track Stuck in guild - {}".format(event.guild_id))
+        skip = await lavalink.skip(event.guild_id)
+        node = await lavalink.get_guild_node(event.guild_id)
+
+        if not skip:
+            raise LightbulbError("There's nothing to skip!")
+        else:
+            if not node.queue and not node.now_playing:
+                await lavalink.stop(event.guild_id)
