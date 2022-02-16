@@ -33,6 +33,10 @@ class LavalinkEvents:
                 node.now_playing.requester,
             ),
             color=0x00FF00,
+        ).set_thumbnail(
+            "https://i.ytimg.com/vi/{}/default.jpg".format(
+                node.now_playing.track.info.identifier
+            )
         )
         await channel.send(embed=embed)
 
