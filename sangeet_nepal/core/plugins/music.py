@@ -5,7 +5,6 @@ import hikari
 import lavasnek_rs
 import lightbulb
 import miru
-from click import style
 from miru.ext import nav
 
 from . import (
@@ -433,6 +432,10 @@ async def nowplaying_command(ctx: lightbulb.Context) -> None:
         title="Now Playing",
         description=f"[{node.now_playing.track.info.title}]({node.now_playing.track.info.uri})",
         color=0x00FF00,
+    ).set_thumbnail(
+        "https://i.ytimg.com/vi/{}/default.jpg".format(
+            node.now_playing.track.info.identifier
+        )
     )
     fields = [
         ("Requested by", f"<@{node.now_playing.requester}>", True),
