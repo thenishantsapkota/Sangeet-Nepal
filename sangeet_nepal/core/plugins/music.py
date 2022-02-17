@@ -1,11 +1,12 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import hikari
 import lavasnek_rs
 import lightbulb
 import miru
 from miru.ext import nav
+from sangeet_nepal.core.utils.time import pretty_timedelta
 
 from . import (
     MusicError,
@@ -265,6 +266,10 @@ async def queue_command(ctx: lightbulb.Context) -> None:
         embed.add_field(
             name="Now Playing",
             value=f"[{node.now_playing.track.info.title}]({node.now_playing.track.info.uri}) [<@{node.now_playing.requester}>]",  # noqa: E501
+        ).add_field(name="Entries", value=len(song_queue[1:]), inline=True).add_field(
+            name="Playtime",
+            value=pretty_timedelta(timedelta(seconds=length / 1000)),
+            inline=True,
         )
         fields.append(embed)
 
