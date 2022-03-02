@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 import hikari
 import lavasnek_rs
 from lightbulb import LightbulbError
+from sangeet_nepal.core.plugins import leave
 
 if TYPE_CHECKING:
     from ..core.bot import SangeetNepal
@@ -41,8 +42,23 @@ class LavalinkEvents:
         await channel.send(embed=embed)
 
     async def track_finish(
-        self, _: lavasnek_rs.Lavalink, event: lavasnek_rs.TrackFinish
+        self, lavalink: lavasnek_rs.Lavalink, event: lavasnek_rs.TrackFinish
     ) -> None:
+        states = self.bot.cache.get_voice_states_view_for_guild(event.guild_id)
+
+        members = [
+            state
+            async for state in states.iterator().filter(
+                lambda i: i.user_id != self.bot.application.id
+            )
+        ]
+        if len(members) == 0:
+            await lavalink.destroy(event.guild_id)
+            await lavalink.stop(event.guild_id)
+            await lavalink.leave(event.guild_id)
+            await lavalink.remove_guild_node(event.guild_id)
+            await lavalink.remove_guild_from_loops(event.guild_id)
+
         logger.info("Track finished on guild - {}".format(event.guild_id))
 
     async def track_exception(
