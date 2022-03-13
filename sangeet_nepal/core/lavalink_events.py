@@ -59,7 +59,6 @@ class LavalinkEvents:
         guild = self.bot.cache.get_guild(event.guild_id)
 
         states = self.bot.cache.get_voice_states_view_for_guild(event.guild_id)
-        node = await lavalink.get_guild_node(event.guild_id)
 
         members = [
             state
@@ -77,13 +76,8 @@ class LavalinkEvents:
         logger.info("Track finished on guild - {}".format(event.guild_id))
         await self.bot.rest.create_message(
             bot_config.logging_channel,
-            embed=hikari.Embed(title="Track Finished", color=0xFFA500)
-            .add_field(name="Name", value=node.now_playing.track.info.title)
-            .add_field(name="Guild", value=guild.name)
-            .set_thumbnail(
-                "https://i.ytimg.com/vi/{}/default.jpg".format(
-                    node.now_playing.track.info.identifier
-                )
+            embed=hikari.Embed(title="Track Finished", color=0xFFA500).add_field(
+                name="Guild", value=guild.name
             ),
         )
 
