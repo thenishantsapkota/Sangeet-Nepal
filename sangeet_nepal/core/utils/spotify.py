@@ -16,17 +16,9 @@ class SpotifyHandler:
 
         tracklist = []
         for item in results["items"]:
-            if item["track"]["artists"].__len__() == 1:
-                tracklist.append(
-                    item["track"]["name"] + " - " + item["track"]["artists"][0]["name"]
-                )
-            else:
-                name_string = ""
-                for index, b in enumerate(item["track"]["artists"]):
-                    name_string += b["name"]
-                    if item["track"]["artists"].__len__() - 1 != index:
-                        name_string += ", "
-                    tracklist.append(item["track"]["name"] + " - " + name_string)
+            tracklist.append(
+                item["track"]["name"] + " - " + item["track"]["artists"][0]["name"]
+            )
 
         return tracklist
 
@@ -34,30 +26,13 @@ class SpotifyHandler:
         results = self.spotify.album_tracks(playlist_url)
         tracklist = []
         for item in results["items"]:
-            if item["artists"].__len__() == 1:
-                tracklist.append(item["name"] + " - " + item["artists"][0]["name"])
-            else:
-                name_string = ""
-                for index, b in enumerate(item["artists"]):
-                    name_string += b["name"]
-                    if item["artists"].__len__() - 1 != index:
-                        name_string += ", "
-                    tracklist.append(item["name"] + " - " + name_string)
+            tracklist.append(item["name"] + " - " + item["artists"][0]["name"])
 
-        return tracklist
+        return list(set(tracklist))
 
     async def get_track_from_url(self, track_url: str) -> list:
         result = self.spotify.track(track_url)
-        if result["artists"].__len__() == 1:
-            return ["{} - {}".format(result["name"], result["artists"][0]["name"])]
-
-        else:
-            name_string = ""
-            for index, b in enumerate(result["artists"]):
-                name_string += b["name"]
-                if result["artists"].__len__() - 1 != index:
-                    name_string += ", "
-            return ["{} - {}".format(result["name"], name_string)]
+        return ["{} - {}".format(result["name"], result["artists"][0]["name"])]
 
     async def handle_spotify_url(self, url: str) -> list | None:
         if url.__contains__("playlist"):
