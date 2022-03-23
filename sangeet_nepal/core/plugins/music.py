@@ -167,6 +167,8 @@ async def play_command(
     url: typing.Optional[str],
     playlist_id: typing.Optional[int],
 ) -> None:
+    if playlist_id and url:
+        raise MusicError("❌ Please supply only `playlist_id` or `url`")
     if playlist_id:
         model = await SavedPlaylists.get_or_none(guild_id=ctx.guild_id, id=playlist_id)
         if model is None:
@@ -174,7 +176,7 @@ async def play_command(
         query = model.playlist_url
     else:
         if url is None:
-            raise MusicError("Query cannot be empty..What am I supposed to play?")
+            raise MusicError("❌ Query cannot be empty..What am I supposed to play?")
         query = url
 
     lavalink = fetch_lavalink(ctx.bot)
