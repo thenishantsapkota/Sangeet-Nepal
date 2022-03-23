@@ -1,4 +1,5 @@
 import random
+import typing
 from datetime import datetime, timedelta
 
 import aiohttp
@@ -7,6 +8,7 @@ import lavasnek_rs
 import lightbulb
 import miru
 from miru.ext import nav
+from models import SavedPlaylists
 from sangeet_nepal.core.utils.time import pretty_timedelta
 
 from . import (
@@ -154,12 +156,28 @@ async def leave_command(ctx: lightbulb.Context) -> None:
 
 
 @music.command
-@lightbulb.option("query", "Query for the play command[Name or URL of the song]")
-@lightbulb.command("play", "Play some music using the bot")
+@lightbulb.option("playlist_id", "ID of your saved playlist", type=int, required=False)
+@lightbulb.option(
+    "url", "Query for the play command[Name or URL of the song]", required=False
+)
+@lightbulb.command("play", "Play some music using the bot", pass_options=True)
 @lightbulb.implements(lightbulb.SlashCommand)
-async def play_command(ctx: lightbulb.Context) -> None:
+async def play_command(
+    ctx: lightbulb.Context,
+    url: typing.Optional[str],
+    playlist_id: typing.Optional[int],
+) -> None:
+    if playlist_id:
+        model = await SavedPlaylists.get_or_none(guild_id=ctx.guild_id, id=playlist_id)
+        if model is None:
+            raise MusicError(f"❌ Playlist with ID `{playlist_id}` couldn't be found!")
+        query = model.playlist_url
+    else:
+        if url is None:
+            raise MusicError("Query cannot be empty..What am I supposed to play?")
+        query = url
+
     lavalink = fetch_lavalink(ctx.bot)
-    query = ctx.options.query
     connection_info = lavalink.get_guild_gateway_connection_info(ctx.guild_id)
     if not connection_info:
         await join(ctx)
