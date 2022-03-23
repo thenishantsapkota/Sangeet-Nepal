@@ -170,7 +170,7 @@ async def play_command(
     if playlist_id and url:
         raise MusicError("❌ Please supply only `playlist_id` or `url`")
     if playlist_id:
-        model = await SavedPlaylists.get_or_none(guild_id=ctx.guild_id, id=playlist_id)
+        model = await SavedPlaylists.get_or_none(id=playlist_id)
         if model is None:
             raise MusicError(f"❌ Playlist with ID `{playlist_id}` couldn't be found!")
         query = model.playlist_url
