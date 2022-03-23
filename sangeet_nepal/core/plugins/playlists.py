@@ -30,7 +30,6 @@ async def playlist_command(ctx: lightbulb.Context) -> None:
 @lightbulb.implements(lightbulb.SlashSubCommand)
 async def playlist_save_command(ctx: lightbulb.Context, url: str, name: str) -> None:
     model = await SavedPlaylists.create(
-        guild_id=ctx.guild_id,
         member_id=ctx.author.id,
         playlist_name=name,
         playlist_url=url,
@@ -49,7 +48,7 @@ async def playlist_save_command(ctx: lightbulb.Context, url: str, name: str) -> 
 @lightbulb.command("list", "List all the available playlists")
 @lightbulb.implements(lightbulb.SlashSubCommand)
 async def playlist_list_command(ctx: lightbulb.Context) -> None:
-    models = await SavedPlaylists.filter(guild_id=ctx.guild_id, member_id=ctx.author.id)
+    models = await SavedPlaylists.filter(member_id=ctx.author.id)
     if not len(models):
         raise CommandError("❌ You don't have any playlists saved!")
     playlists = [
@@ -75,9 +74,11 @@ async def playlist_list_command(ctx: lightbulb.Context) -> None:
 @lightbulb.command("delete", "Delete a saved playlist!", pass_options=True)
 @lightbulb.implements(lightbulb.SlashSubCommand)
 async def playlist_delete_command(ctx: lightbulb.Context, playlist_id: int) -> None:
-    model = await SavedPlaylists.get_or_none(id=playlist_id, guild_id=ctx.guild_id)
+    model = await SavedPlaylists.get_or_none(id=playlist_id)
     if model is None:
         raise CommandError(f"❌ Playlist with ID `{playlist_id}` couldn't be found!")
+    if model.member_id != ctx.author.id:
+        raise CommandError("❌ That playlist doesn't belong to you!")
     await model.delete()
     await ctx.respond(
         embed=hikari.Embed(
@@ -91,16 +92,16 @@ async def playlist_delete_command(ctx: lightbulb.Context, playlist_id: int) -> N
 @lightbulb.command("global", "List all the playlists of the guild")
 @lightbulb.implements(lightbulb.SlashSubCommand)
 async def playlist_global_command(ctx: lightbulb.Context) -> None:
-    models = await SavedPlaylists.filter(guild_id=ctx.guild_id)
+    models = await SavedPlaylists.all()
     if not len(models):
-        raise MusicError("❌There are no playlists saved in the guild!")
+        raise MusicError("❌There are no playlists saved yet!")
     playlists = [
         f"**ID** - #{model.id}\n**Playlist Name** - {model.playlist_name}\n**Playlist URL** - {model.playlist_url}\n**Saved by** - <@{model.member_id}>"
         for model in models
     ]
     fields = [
         hikari.Embed(
-            title=f"Saved Playlists of {ctx.get_guild().name}",
+            title="Saved Playlists",
             description="\n\n".join(data),
             color=0x00FF00,
             timestamp=datetime.now().astimezone(),
