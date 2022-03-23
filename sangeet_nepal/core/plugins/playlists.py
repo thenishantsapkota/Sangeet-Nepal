@@ -1,17 +1,10 @@
 from datetime import datetime
-from queue import LifoQueue
 
 import hikari
-import lavasnek_rs
 import lightbulb
 from miru.ext import nav
 from models import SavedPlaylists
-from sangeet_nepal.core.plugins import (
-    _chunk,
-    fetch_lavalink,
-    handle_spotify_player,
-    join,
-)
+from sangeet_nepal.core.plugins import MusicError, _chunk
 
 
 class CommandError(lightbulb.LightbulbError):
@@ -92,6 +85,31 @@ async def playlist_delete_command(ctx: lightbulb.Context, playlist_id: int) -> N
             color=0x00FF00,
         )
     )
+
+
+@playlist_command.child
+@lightbulb.command("global", "List all the playlists of the guild")
+@lightbulb.implements(lightbulb.SlashSubCommand)
+async def playlist_global_command(ctx: lightbulb.Context) -> None:
+    models = await SavedPlaylists.filter(guild_id=ctx.guild_id)
+    if not len(models):
+        raise MusicError("❌There are no playlists saved in the guild!")
+    playlists = [
+        f"**ID** - #{model.id}\n**Playlist Name** - {model.playlist_name}\n**Playlist URL** - {model.playlist_url}\n**Saved by** - <@{model.member_id}>"
+        for model in models
+    ]
+    fields = [
+        hikari.Embed(
+            title=f"Saved Playlists of {ctx.get_guild().name}",
+            description="\n\n".join(data),
+            color=0x00FF00,
+            timestamp=datetime.now().astimezone(),
+        )
+        for data in _chunk(playlists, 5)
+    ]
+    navigator = nav.NavigatorView(pages=fields)
+    await navigator.send(ctx.interaction)
+    await navigator.wait()
 
 
 def load(bot: lightbulb.BotApp) -> None:
