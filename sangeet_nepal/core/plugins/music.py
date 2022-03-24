@@ -176,7 +176,7 @@ async def play_command(
         query = model.playlist_url
     else:
         if url is None:
-            raise MusicError("❌ Query cannot be empty..What am I supposed to play?")
+            raise MusicError("❌ Provide either `playlist_id` or `url`")
         query = url
 
     lavalink = fetch_lavalink(ctx.bot)
