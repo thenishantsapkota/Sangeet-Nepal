@@ -1,5 +1,5 @@
 import asyncio
-from datetime import timedelta
+from datetime import datetime, timedelta
 from platform import python_version
 from time import time
 
@@ -8,8 +8,10 @@ import lightbulb
 import miru
 from hikari import __version__ as hikari_version
 from lightbulb import __version__ as lb_version
+from miru.ext import nav
 from psutil import Process, virtual_memory
 from sangeet_nepal import __version__ as bot_version
+from sangeet_nepal.core.plugins import _chunk
 from sangeet_nepal.core.utils.time import pretty_timedelta
 
 misc = lightbulb.Plugin("Misc", "Misc Commands")
@@ -94,6 +96,30 @@ async def botinfo_command(ctx: lightbulb.Context) -> None:
     ]
 
     await ctx.respond(embed=embed, components=row)
+
+
+@misc.command
+@lightbulb.add_checks(lightbulb.owner_only)
+@lightbulb.command("servers", "List of servers i'm in")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def servers_command(ctx: lightbulb.Context) -> None:
+    guild_list = ctx.bot.cache.get_available_guilds_view().values()
+    guilds = [
+        f"**Name** - {guild.name}\n**ID** - {guild.id}\n**Owner** - <@{guild.owner_id}>"
+        for guild in guild_list
+    ]
+    fields = [
+        hikari.Embed(
+            title="List of Servers",
+            description="\n\n".join(guild),
+            color=0x00FF00,
+            timestamp=datetime.now().astimezone(),
+        )
+        for _, guild in enumerate(_chunk(guilds, 10))
+    ]
+    navigator = nav.NavigatorView(pages=fields)
+    await navigator.send(ctx.interaction)
+    await navigator.wait()
 
 
 def load(bot: lightbulb.BotApp) -> None:
