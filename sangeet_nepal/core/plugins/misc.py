@@ -115,7 +115,7 @@ async def servers_command(ctx: lightbulb.Context) -> None:
             color=0x00FF00,
             timestamp=datetime.now().astimezone(),
         )
-        for _, guild in enumerate(_chunk(guilds, 10))
+        for _, guild in enumerate(_chunk(guilds, 5))
     ]
     navigator = nav.NavigatorView(pages=fields)
     await navigator.send(ctx.interaction)
