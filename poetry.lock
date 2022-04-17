@@ -207,7 +207,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "hikari"
-version = "2.0.0.dev106"
+version = "2.0.0.dev108"
 description = "A sane Discord API for Python 3 built on asyncio and good intentions"
 category = "main"
 optional = false
@@ -225,17 +225,17 @@ speedups = ["aiodns (>=3.0,<4.0)", "cchardet (>=2.1,<3.0)", "Brotli (>=1.0,<2.0)
 
 [[package]]
 name = "hikari-lightbulb"
-version = "2.2.0"
+version = "2.2.1"
 description = "A simple to use command handler for Hikari"
 category = "main"
 optional = false
 python-versions = ">=3.8.0,<3.11"
 
 [package.dependencies]
-hikari = ">=2.0.0.dev106,<2.1.0"
+hikari = ">=2.0.0.dev107,<2.1.0"
 
 [package.extras]
-crontrigger = ["croniter (>=1.2.0,<1.3.0)", "types-croniter (>=1.0.7,<1.1.0)"]
+crontrigger = ["croniter (>=1.3.4,<1.4.0)", "types-croniter (>=1.0.8,<1.1.0)"]
 
 [[package]]
 name = "hikari-miru"
@@ -502,7 +502,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "71dd85fba046b933a6bfdd5fffbab389c97adcf3537317c35314065dc9230565"
+content-hash = "e9f01748ce9a3da6cc927b994da458aff5edd3bfc1eb2f286c93dd2719d773c9"
 
 [metadata.files]
 aerich = [
@@ -721,12 +721,12 @@ frozenlist = [
     {file = "frozenlist-1.3.0.tar.gz", hash = "sha256:ce6f2ba0edb7b0c1d8976565298ad2deba6f8064d2bebb6ffce2ca896eb35b0b"},
 ]
 hikari = [
-    {file = "hikari-2.0.0.dev106-py3-none-any.whl", hash = "sha256:52bdd5b793e13b2935abd8a110a110b46017b86bcafc882ce11133350b6ab4e3"},
-    {file = "hikari-2.0.0.dev106.tar.gz", hash = "sha256:e04a02f2e0b13cd60ec78e16a024f8d2f8f04636689b7c806140a1a639bf7f8f"},
+    {file = "hikari-2.0.0.dev108-py3-none-any.whl", hash = "sha256:bc78e5c753f0b87ae24e1a644a2e4d01d08d5ed35cbaca0f160da5283a589785"},
+    {file = "hikari-2.0.0.dev108.tar.gz", hash = "sha256:d13cfcd0e3732185fa3048b5d9fd8b6078b5dbb0df7820ba7e3e55083bf9d4b5"},
 ]
 hikari-lightbulb = [
-    {file = "hikari-lightbulb-2.2.0.tar.gz", hash = "sha256:0538a503fd415c88aab6dfbcb0463f1e22c35ed6bcaaa3f58ecbbfafa5e02a1d"},
-    {file = "hikari_lightbulb-2.2.0-py3-none-any.whl", hash = "sha256:38b272006155a8ae8605b813225a3a5f033da509f9a5329e2d5521acdd414e22"},
+    {file = "hikari-lightbulb-2.2.1.tar.gz", hash = "sha256:77c543dfec286b21ce4382bb5ede7a3106bbcab5ae43f41a1dc921b5e2e7e3af"},
+    {file = "hikari_lightbulb-2.2.1-py3-none-any.whl", hash = "sha256:2fafc1486e3bb187f7bd2c8f5fc1b7fee29ca29addcaab638ebc981cbff576a0"},
 ]
 hikari-miru = [
     {file = "hikari-miru-1.1.1.tar.gz", hash = "sha256:7d9ff975546e963cb0b3f234d3396990dc20d0569a70f42135c3b8a16880bd20"},

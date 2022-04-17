@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "Sangeet Nepal"
-version = "0.1.0-alpha.1"
+version = "1.0.0"
 description = "A music bot for Nepali Discord Servers that helps people to listen to Music better"
 authors = ["Nishant Sapkota <snishant306@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-hikari = "^2.0.0-alpha.106"
-hikari-lightbulb = "^2.2.0"
+hikari = "^2.0.0-alpha.108"
+hikari-lightbulb = "^2.2.1"
 pydantic = {extras = ["dotenv"], version = "^1.9.0"}
 hikari-miru = "^1.1.1"
 lavasnek-rs = "^0.1.0-alpha.4"
