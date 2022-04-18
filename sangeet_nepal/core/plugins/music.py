@@ -158,37 +158,37 @@ async def leave_command(ctx: lightbulb.Context) -> None:
 @music.command
 @lightbulb.option("playlist_id", "ID of your saved playlist", type=int, required=False)
 @lightbulb.option(
-    "url", "Query for the play command[Name or URL of the song]", required=False
+    "query", "Query for the play command[Name or URL of the song]", required=False
 )
 @lightbulb.command("play", "Play some music using the bot", pass_options=True)
 @lightbulb.implements(lightbulb.SlashCommand)
 async def play_command(
     ctx: lightbulb.Context,
-    url: typing.Optional[str],
+    query: typing.Optional[str],
     playlist_id: typing.Optional[int],
 ) -> None:
-    if playlist_id and url:
+    if playlist_id and query:
         raise MusicError("❌ Please supply only `playlist_id` or `url`")
     if playlist_id:
         model = await SavedPlaylists.get_or_none(id=playlist_id)
         if model is None:
             raise MusicError(f"❌ Playlist with ID `{playlist_id}` couldn't be found!")
-        query = model.playlist_url
+        query_url = model.playlist_url
     else:
-        if url is None:
+        if query is None:
             raise MusicError("❌ Provide either `playlist_id` or `url`")
-        query = url
+        query_url = query
 
     lavalink = fetch_lavalink(ctx.bot)
     connection_info = lavalink.get_guild_gateway_connection_info(ctx.guild_id)
     if not connection_info:
         await join(ctx)
 
-    if "https://open.spotify.com" in query:
-        await handle_spotify_player(ctx, query)
+    if "https://open.spotify.com" in query_url:
+        await handle_spotify_player(ctx, query_url)
         return
 
-    query_information = await lavalink.auto_search_tracks(query)
+    query_information = await lavalink.auto_search_tracks(query_url)
     playlist = False
     if query_information.playlist_info.name:
         playlist = True
@@ -531,6 +531,35 @@ async def lyrics_command(ctx: lightbulb.Context) -> None:
     navigator = nav.NavigatorView(pages=fields)
     await navigator.send(ctx.interaction)
     await navigator.wait()
+
+
+@music.command
+@lightbulb.option("index", "The index you want to skip to", type=int)
+@lightbulb.command("skipto", "Skip to a specific song via the index", pass_options=True)
+@lightbulb.implements(lightbulb.SlashCommand)
+@check_voice_state
+async def skipto_command(ctx: lightbulb.Context, index: int) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    queue = node.queue[1:]
+    if index == 0:
+        raise MusicError("Cannot skip to the currently playing song!")
+    if not queue:
+        raise MusicError("No songs in the queue!")
+    try:
+        del queue[1 : index - 1]
+    except IndexError:
+        raise MusicError("No song at the specified index.")
+    node.queue = queue
+    await lavalink.set_guild_node(ctx.guild_id, node)
+
+    await lavalink.skip(ctx.guild_id)
+
+    await ctx.respond(
+        embed=hikari.Embed(
+            description=f"Skipped to `{index}` in the queue.", color=0x00FF00
+        )
+    )
 
 
 def load(bot: lightbulb.BotApp) -> None:
