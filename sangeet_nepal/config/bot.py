@@ -5,6 +5,7 @@ class BotConfig(BaseSettings):
     token: str
     test_guilds: list[int]
     logging_channel: int
+    lyrics_api_key: str
 
     class Config:
         env_file = ".env"
