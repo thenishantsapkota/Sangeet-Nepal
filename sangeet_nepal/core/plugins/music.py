@@ -6,9 +6,11 @@ import aiohttp
 import hikari
 import lavasnek_rs
 import lightbulb
+import lyricsgenius
 import miru
 from miru.ext import nav
 from models import SavedPlaylists
+from sangeet_nepal.config import bot_config
 from sangeet_nepal.core.utils.time import pretty_timedelta
 
 from . import (
@@ -499,41 +501,6 @@ async def skip_command(ctx: lightbulb.Context) -> None:
 
 
 @music.command
-@lightbulb.command("lyrics", "Get lyrics to a specific song")
-@lightbulb.implements(lightbulb.SlashCommand)
-async def lyrics_command(ctx: lightbulb.Context) -> None:
-    lavalink = fetch_lavalink(ctx.bot)
-    node = await lavalink.get_guild_node(ctx.guild_id)
-    if not node.now_playing:
-        raise MusicError("Nothing playing at the moment!")
-    title = node.now_playing.track.info.title
-    async with aiohttp.ClientSession() as session:
-        async with session.get(
-            "https://some-random-api.ml/lyrics?title={}".format(title)
-        ) as r:
-            if not 200 <= r.status <= 299:
-                raise MusicError("No lyrics could be found!")
-            data = await r.json()
-
-    lyrics = str(data["lyrics"])
-    iterator = lyrics.splitlines()
-    fields = [
-        hikari.Embed(
-            description="\n".join(lyric),
-            color=0x00FF00,
-            timestamp=datetime.now().astimezone(),
-        )
-        .set_footer(text="Requested by {}".format(ctx.author))
-        .set_author(name=title, url=node.now_playing.track.info.uri)
-        for _, lyric in enumerate(_chunk(iterator, 20))
-    ]
-
-    navigator = nav.NavigatorView(pages=fields)
-    await navigator.send(ctx.interaction)
-    await navigator.wait()
-
-
-@music.command
 @lightbulb.option("index", "The index you want to skip to", type=int)
 @lightbulb.command("skipto", "Skip to a specific song via the index", pass_options=True)
 @lightbulb.implements(lightbulb.SlashCommand)
@@ -560,6 +527,40 @@ async def skipto_command(ctx: lightbulb.Context, index: int) -> None:
             description=f"Skipped to `{index}` in the queue.", color=0x00FF00
         )
     )
+
+
+@music.command
+@lightbulb.command("lyrics", "Get lyrics of currently playing song")
+@lightbulb.implements(lightbulb.SlashCommand)
+async def lyrics_command(ctx: lightbulb.Context) -> None:
+    lavalink = fetch_lavalink(ctx.bot)
+    node = await lavalink.get_guild_node(ctx.guild_id)
+    genius = lyricsgenius.Genius(
+        access_token=bot_config.lyrics_api_key,
+        verbose=True,
+        remove_section_headers=False,
+        skip_non_songs=True,
+    )
+    song = genius.search_song(node.now_playing.track.info.title)
+    lyrics = song.lyrics
+    iterator = lyrics.splitlines()
+    fields = [
+        hikari.Embed(
+            description="\n".join(lyric),
+            color=0x00FF00,
+            timestamp=datetime.now().astimezone(),
+        )
+        .set_footer(text="Requested by {}".format(ctx.author))
+        .set_author(
+            name=f"Lyrics of {node.now_playing.track.info.title}",
+            url=node.now_playing.track.info.uri,
+        )
+        for _, lyric in enumerate(_chunk(iterator, 20))
+    ]
+
+    navigator = nav.NavigatorView(pages=fields)
+    await navigator.send(ctx.interaction)
+    await navigator.wait()
 
 
 def load(bot: lightbulb.BotApp) -> None:
