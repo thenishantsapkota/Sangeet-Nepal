@@ -542,6 +542,8 @@ async def lyrics_command(ctx: lightbulb.Context) -> None:
         skip_non_songs=True,
     )
     song = genius.search_song(node.now_playing.track.info.title)
+    if not song:
+        raise MusicError("No lyrics could be found!")
     lyrics = song.lyrics
     iterator = lyrics.splitlines()
     fields = [
