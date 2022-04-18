@@ -1,6 +1,6 @@
 [[package]]
 name = "aerich"
-version = "0.5.3"
+version = "0.6.3"
 description = "A database migrations tool for Tortoise ORM."
 category = "main"
 optional = false
@@ -8,13 +8,13 @@ python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
 click = "*"
-ddlparse = "*"
 dictdiffer = "*"
 pydantic = "*"
+tomlkit = "*"
 tortoise-orm = "*"
 
 [package.extras]
-aiomysql = ["aiomysql"]
+asyncmy = ["asyncmy"]
 asyncpg = ["asyncpg"]
 
 [[package]]
@@ -95,6 +95,21 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.11.1"
+description = "Screen-scraping library"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
 name = "black"
 version = "21.12b0"
 description = "The uncompromising code formatter."
@@ -171,17 +186,6 @@ colorama = {version = "*", markers = "sys_platform == \"win32\""}
 
 [package.extras]
 development = ["black", "flake8", "mypy", "pytest", "types-colorama"]
-
-[[package]]
-name = "ddlparse"
-version = "1.10.0"
-description = "DDL parase and Convert to BigQuery JSON schema"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pyparsing = "*"
 
 [[package]]
 name = "dictdiffer"
@@ -262,11 +266,11 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "iso8601"
-version = "0.1.16"
+version = "1.0.2"
 description = "Simple module to parse ISO 8601 dates"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6.2,<4.0"
 
 [[package]]
 name = "isort"
@@ -292,6 +296,23 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 black = ">=21.12b0,<22.0"
+
+[[package]]
+name = "lyricsgenius"
+version = "3.0.1"
+description = "Download lyrics and metadata from Genius.com"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+beautifulsoup4 = ">=4.6.0"
+requests = ">=2.20.0"
+
+[package.extras]
+checks = ["tox (>=3.2,<4.0)", "doc8", "flake8", "flake8-bugbear", "pygments"]
+dev = ["sphinx (>=3.3,<4.0)", "sphinx-rtd-theme", "tox (>=3.2,<4.0)", "doc8", "flake8", "flake8-bugbear", "pygments"]
+docs = ["sphinx (>=3.3,<4.0)", "sphinx-rtd-theme"]
 
 [[package]]
 name = "multidict"
@@ -357,19 +378,8 @@ dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
 [[package]]
-name = "pyparsing"
-version = "3.0.7"
-description = "Python parsing module"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.extras]
-diagrams = ["jinja2", "railroad-diagrams"]
-
-[[package]]
 name = "pypika-tortoise"
-version = "0.1.3"
+version = "0.1.4"
 description = "Forked from pypika and streamline just for tortoise-orm"
 category = "main"
 optional = false
@@ -421,6 +431,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
+name = "soupsieve"
+version = "2.3.2.post1"
+description = "A modern CSS selector implementation for Beautiful Soup."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "spotipy"
 version = "2.19.0"
 description = "A light weight Python library for the Spotify Web API"
@@ -446,8 +464,16 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "tomlkit"
+version = "0.10.1"
+description = "Style preserving TOML library"
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "tortoise-orm"
-version = "0.18.1"
+version = "0.19.0"
 description = "Easy async ORM for python, built with relations in mind"
 category = "main"
 optional = false
@@ -456,15 +482,16 @@ python-versions = ">=3.7,<4.0"
 [package.dependencies]
 aiosqlite = ">=0.16.0,<0.18.0"
 asyncpg = {version = "*", optional = true, markers = "extra == \"asyncpg\""}
-iso8601 = ">=0.1.13,<0.2.0"
-pypika-tortoise = ">=0.1.3,<0.2.0"
+iso8601 = ">=1.0.2,<2.0.0"
+pypika-tortoise = ">=0.1.4,<0.2.0"
 pytz = "*"
 
 [package.extras]
 aiomysql = ["aiomysql"]
-asyncmy = ["asyncmy"]
+asyncmy = ["asyncmy (>=0.2.4,<0.3.0)"]
 asyncpg = ["asyncpg"]
 accel = ["ciso8601", "orjson", "uvloop"]
+psycopg = ["psycopg"]
 
 [[package]]
 name = "typing-extensions"
@@ -502,12 +529,12 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "e9f01748ce9a3da6cc927b994da458aff5edd3bfc1eb2f286c93dd2719d773c9"
+content-hash = "94ef7993bae068debe6b52dbd1519a82ae3b0d7a49cbb94cb609dbef106f09e9"
 
 [metadata.files]
 aerich = [
-    {file = "aerich-0.5.3-py3-none-any.whl", hash = "sha256:0338d06abe4cb9475a63b2193c37cb140d284adeb0fc7bb0cc73c44735443f70"},
-    {file = "aerich-0.5.3.tar.gz", hash = "sha256:30a1b3e34f690479c9b78cf39baebab840907d58c6614fe1929b99192c7748f4"},
+    {file = "aerich-0.6.3-py3-none-any.whl", hash = "sha256:d45f98214ed54b8ec9be949df264c5b0b9e8b79d8f8ba9e68714675bc81a5574"},
+    {file = "aerich-0.6.3.tar.gz", hash = "sha256:96ac087922048470687264125cb9dfeaade982219c78e6a9b91a0fb67eaa1cd1"},
 ]
 aiohttp = [
     {file = "aiohttp-3.8.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:1ed0b6477896559f17b9eaeb6d38e07f7f9ffe40b9f0f9627ae8b9926ae260a8"},
@@ -627,6 +654,10 @@ attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
+beautifulsoup4 = [
+    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
+    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
+]
 black = [
     {file = "black-21.12b0-py3-none-any.whl", hash = "sha256:a615e69ae185e08fdd73e4715e260e2479c861b5740057fde6e8b4e3b7dd589f"},
     {file = "black-21.12b0.tar.gz", hash = "sha256:77b80f693a569e2e527958459634f18df9b0ba2625ba4e0c2d5da5be42e6f2b3"},
@@ -650,10 +681,6 @@ colorama = [
 colorlog = [
     {file = "colorlog-6.6.0-py2.py3-none-any.whl", hash = "sha256:351c51e866c86c3217f08e4b067a7974a678be78f07f85fc2d55b8babde6d94e"},
     {file = "colorlog-6.6.0.tar.gz", hash = "sha256:344f73204009e4c83c5b6beb00b3c45dc70fcdae3c80db919e0a4171d006fde8"},
-]
-ddlparse = [
-    {file = "ddlparse-1.10.0-py3-none-any.whl", hash = "sha256:71761b3457c8720853af3aeef266e2da1b6edef50936969492d586d7046a2ac2"},
-    {file = "ddlparse-1.10.0.tar.gz", hash = "sha256:6418681baa848eb01251ab79eb3d0ad7e140e6ab1deaae5a019353ddb3a908da"},
 ]
 dictdiffer = [
     {file = "dictdiffer-0.9.0-py2.py3-none-any.whl", hash = "sha256:442bfc693cfcadaf46674575d2eba1c53b42f5e404218ca2c2ff549f2df56595"},
@@ -737,8 +764,8 @@ idna = [
     {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
 ]
 iso8601 = [
-    {file = "iso8601-0.1.16-py2.py3-none-any.whl", hash = "sha256:906714829fedbc89955d52806c903f2332e3948ed94e31e85037f9e0226b8376"},
-    {file = "iso8601-0.1.16.tar.gz", hash = "sha256:36532f77cc800594e8f16641edae7f1baf7932f05d8e508545b95fc53c6dc85b"},
+    {file = "iso8601-1.0.2-py3-none-any.whl", hash = "sha256:d7bc01b1c2a43b259570bb307f057abc578786ea734ba2b87b836c5efc5bd443"},
+    {file = "iso8601-1.0.2.tar.gz", hash = "sha256:27f503220e6845d9db954fb212b95b0362d8b7e6c1b2326a87061c3de93594b1"},
 ]
 isort = [
     {file = "isort-5.10.1-py3-none-any.whl", hash = "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7"},
@@ -779,6 +806,10 @@ lavasnek-rs = [
     {file = "lavasnek_rs-0.1.0a4-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:9e8ec46972de5e8bce22db471d9a8251d9a2e4829163a457f3744c85ca87697e"},
     {file = "lavasnek_rs-0.1.0a4-cp39-cp39-win_amd64.whl", hash = "sha256:13b9db7271b01f0007f111bad52675f47d4c86f5eeb8c2327fc8e890c44941c7"},
     {file = "lavasnek_rs-0.1.0a4.tar.gz", hash = "sha256:2612c90dd3c380d440a9000c48b185d87334185e9f4f66b57e7d44838e261974"},
+]
+lyricsgenius = [
+    {file = "lyricsgenius-3.0.1-py3-none-any.whl", hash = "sha256:145df7d79e6b6ebe7ff6da9ed08c0cb43b251bb88f859339224b20e3f8399b05"},
+    {file = "lyricsgenius-3.0.1.tar.gz", hash = "sha256:83aef55ffca0b8ea69651c4b144693d1c012687a7da57f88d095b333f2e18928"},
 ]
 multidict = [
     {file = "multidict-6.0.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b9e95a740109c6047602f4db4da9949e6c5945cefbad34a1299775ddc9a62e2"},
@@ -924,13 +955,9 @@ pydantic = [
     {file = "pydantic-1.9.0-py3-none-any.whl", hash = "sha256:085ca1de245782e9b46cefcf99deecc67d418737a1fd3f6a4f511344b613a5b3"},
     {file = "pydantic-1.9.0.tar.gz", hash = "sha256:742645059757a56ecd886faf4ed2441b9c0cd406079c2b4bee51bcc3fbcd510a"},
 ]
-pyparsing = [
-    {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:a6c06a88f252e6c322f65faf8f418b16213b51bdfaece0524c1c1bc30c63c484"},
-    {file = "pyparsing-3.0.7.tar.gz", hash = "sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"},
-]
 pypika-tortoise = [
-    {file = "pypika-tortoise-0.1.3.tar.gz", hash = "sha256:ecdf2d6e0aeb0e15880d9e2ead41362ec7320f37fb25a3a71664c2e1105ad218"},
-    {file = "pypika_tortoise-0.1.3-py3-none-any.whl", hash = "sha256:28fb2715a94ff2f3bc1c4ef6cc46c385c244c27d100aac760231bf612361d5ba"},
+    {file = "pypika-tortoise-0.1.4.tar.gz", hash = "sha256:f4b4e6c72fc13f49058181928e66930b59fee988823c8fd01498f95e2ff788ca"},
+    {file = "pypika_tortoise-0.1.4-py3-none-any.whl", hash = "sha256:bdc7e63c88791679a8b3f0b008582b6d3fcd21830650d274db35a7012e7b8bcd"},
 ]
 python-dotenv = [
     {file = "python-dotenv-0.19.2.tar.gz", hash = "sha256:a5de49a31e953b45ff2d2fd434bbc2670e8db5273606c1e737cc6b93eff3655f"},
@@ -948,6 +975,10 @@ six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
+soupsieve = [
+    {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
+    {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
+]
 spotipy = [
     {file = "spotipy-2.19.0-py2-none-any.whl", hash = "sha256:dd6de229351bb6cf4d9bc169c5e183288da795f5a8265968dd98e95c037f9e7a"},
     {file = "spotipy-2.19.0-py3-none-any.whl", hash = "sha256:766f9ef96d61851d7884c4553f2de2527c3af01df603985f6987543bb28e3ff5"},
@@ -957,9 +988,13 @@ tomli = [
     {file = "tomli-1.2.3-py3-none-any.whl", hash = "sha256:e3069e4be3ead9668e21cb9b074cd948f7b3113fd9c8bba083f48247aab8b11c"},
     {file = "tomli-1.2.3.tar.gz", hash = "sha256:05b6166bff487dc068d322585c7ea4ef78deed501cc124060e0f238e89a9231f"},
 ]
+tomlkit = [
+    {file = "tomlkit-0.10.1-py3-none-any.whl", hash = "sha256:3eba517439dcb2f84cf39f4f85fd2c3398309823a3c75ac3e73003638daf7915"},
+    {file = "tomlkit-0.10.1.tar.gz", hash = "sha256:3c517894eadef53e9072d343d37e4427b8f0b6200a70b7c9a19b2ebd1f53b951"},
+]
 tortoise-orm = [
-    {file = "tortoise-orm-0.18.1.tar.gz", hash = "sha256:537361ce2d0829741afd43afd9bc9413a314a176cb58747d88047c20ccc01db1"},
-    {file = "tortoise_orm-0.18.1-py3-none-any.whl", hash = "sha256:edc9f3b49635b1dd74f73de38f54e031377e4f02b3698322502047f2e031af8b"},
+    {file = "tortoise-orm-0.19.0.tar.gz", hash = "sha256:ad9f0c59ec2ed889c77b58857125038561cbe3846438cf20d39a7919ea62aecb"},
+    {file = "tortoise_orm-0.19.0-py3-none-any.whl", hash = "sha256:c2a8be9f8906577d47e03fcc11ce3ee9b8bd9302b29954bf1e319428b487daab"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.0.1-py3-none-any.whl", hash = "sha256:7f001e5ac290a0c0401508864c7ec868be4e701886d5b573a9528ed3973d9d3b"},
