@@ -2,6 +2,7 @@ import math
 import re
 from datetime import datetime, timedelta
 
+import lavasnek_rs
 import lightbulb
 
 
@@ -91,3 +92,15 @@ def timedelta_converter(unit: str):
         return timedelta(weeks=1)
     else:
         raise HelpersError("Unknown time type.")
+
+
+def convert_time(length: int) -> str:
+    amount = length
+    millis = int(amount)
+    l_seconds = (millis / 1000) % 60
+    l_seconds = int(l_seconds)
+    l_minutes = (millis / (1000 * 60)) % 60
+    l_minutes = int(l_minutes)
+    first_n = int(l_seconds / 10)
+    string = f"""{l_minutes}:{l_seconds if first_n !=0 else f'0{l_seconds}'}"""
+    return string

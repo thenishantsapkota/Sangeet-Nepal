@@ -11,7 +11,7 @@ import miru
 from miru.ext import nav
 from models import SavedPlaylists
 from sangeet_nepal.config import bot_config
-from sangeet_nepal.core.utils.time import pretty_timedelta
+from sangeet_nepal.core.utils.time import convert_time, pretty_timedelta
 
 from . import (
     MusicError,
@@ -30,6 +30,23 @@ class Controls(miru.View):
     def __init__(self, author_id: hikari.Snowflake) -> None:
         self.author_id = author_id
         super().__init__(timeout=120)
+
+    @miru.select(
+        placeholder="Volume",
+        options=[miru.SelectOption(label=x * 10) for x in range(1, 11)],
+    )
+    async def volume_select(self, select: miru.Select, ctx: miru.Context) -> None:
+        lavalink = fetch_lavalink(music.bot)
+        node = await lavalink.get_guild_node(ctx.guild_id)
+        if not node or not node.now_playing:
+            return await ctx.respond(
+                "Nothing is playing..", flags=hikari.MessageFlag.EPHEMERAL
+            )
+        await lavalink.volume(ctx.guild_id, int(select.values[0]))
+        await ctx.respond(
+            "Volume set to {}%".format(select.values[0]),
+            flags=hikari.MessageFlag.EPHEMERAL,
+        )
 
     @miru.button(label="Play/Pause", style=hikari.ButtonStyle.SUCCESS)
     async def play_pause_button(self, _: miru.Button, ctx: miru.Context) -> None:
@@ -94,23 +111,6 @@ class Controls(miru.View):
         button.disabled = True
         await self.message.edit(components=self.build())
         await ctx.respond("Skipped!", flags=hikari.MessageFlag.EPHEMERAL)
-
-    @miru.select(
-        placeholder="Volume",
-        options=[miru.SelectOption(label=x * 10) for x in range(1, 11)],
-    )
-    async def volume_select(self, select: miru.Select, ctx: miru.Context) -> None:
-        lavalink = fetch_lavalink(music.bot)
-        node = await lavalink.get_guild_node(ctx.guild_id)
-        if not node or not node.now_playing:
-            return await ctx.respond(
-                "Nothing is playing..", flags=hikari.MessageFlag.EPHEMERAL
-            )
-        await lavalink.volume(ctx.guild_id, int(select.values[0]))
-        await ctx.respond(
-            "Volume set to {}%".format(select.values[0]),
-            flags=hikari.MessageFlag.EPHEMERAL,
-        )
 
     async def view_check(self, ctx: miru.Context) -> bool:
         if not ctx.user.id == self.author_id:
@@ -456,6 +456,9 @@ async def nowplaying_command(ctx: lightbulb.Context) -> None:
     if not node or not node.now_playing:
         raise MusicError("There's nothing playing at the moment!")
 
+    playing_position = convert_time(node.now_playing.track.info.position)
+    song_length = convert_time(node.now_playing.track.info.length)
+
     embed = hikari.Embed(
         title="Now Playing",
         description=f"[{node.now_playing.track.info.title}]({node.now_playing.track.info.uri})",
@@ -468,6 +471,7 @@ async def nowplaying_command(ctx: lightbulb.Context) -> None:
     fields = [
         ("Requested by", f"<@{node.now_playing.requester}>", True),
         ("Author", node.now_playing.track.info.author, True),
+        ("Duration", f"{playing_position}/{song_length}", False),
     ]
     for name, value, inline in fields:
         embed.add_field(name=name, value=value, inline=inline)
