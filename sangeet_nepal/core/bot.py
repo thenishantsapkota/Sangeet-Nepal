@@ -23,7 +23,6 @@ class SangeetNepal(lightbulb.BotApp):
     def __init__(self) -> None:
         super().__init__(
             token=bot_config.token,
-            default_enabled_guilds=bot_config.test_guilds,
             intents=hikari.Intents.ALL,
         )
         self.data = Data()
@@ -35,7 +34,12 @@ class SangeetNepal(lightbulb.BotApp):
         self.event_manager.subscribe(hikari.StoppedEvent, self.on_stopped)
         self.event_manager.subscribe(hikari.ShardReadyEvent, self.on_shard_ready)
 
-        super().run()
+        super().run(
+            activity=hikari.Activity(
+                name="Thanks for the donation Brahma <3",
+                type=hikari.ActivityType.PLAYING,
+            )
+        )
 
     async def on_starting(self, _: hikari.StartingEvent) -> None:
         self.load_extensions_from("./sangeet_nepal/core/plugins", recursive=True)
