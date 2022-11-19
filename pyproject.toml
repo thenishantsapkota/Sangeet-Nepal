@@ -7,11 +7,11 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-hikari = "^2.0.0-alpha.108"
-hikari-lightbulb = "^2.2.1"
+hikari = "^2.0.0.dev112"
+hikari-lightbulb = "^2.2.5"
 pydantic = {extras = ["dotenv"], version = "^1.9.0"}
-hikari-miru = "^1.1.1"
-lavasnek-rs = "^0.1.0-alpha.4"
+hikari-miru = "^1.1.2"
+lavasnek-rs = "^0.1.0a5"
 tortoise-orm = {extras = ["asyncpg"], version = "^0.19.0"}
 aerich = "^0.6.3"
 spotipy = "^2.19.0"
@@ -21,6 +21,9 @@ lyricsgenius = "^3.0.1"
 [tool.poetry.dev-dependencies]
 isort = "^5.10.1"
 
+
+[tool.poetry.group.dev.dependencies]
+black = {version = "21.12b0", allow-prereleases = true}
 
 [tool.aerich]
 tortoise_orm = "tortoise_config.tortoise_config"

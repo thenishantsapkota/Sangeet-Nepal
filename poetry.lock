@@ -35,7 +35,7 @@ multidict = ">=4.5,<7.0"
 yarl = ">=1.0,<2.0"
 
 [package.extras]
-speedups = ["aiodns", "brotli", "cchardet"]
+speedups = ["Brotli", "aiodns", "cchardet"]
 
 [[package]]
 name = "aiosignal"
@@ -76,23 +76,23 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-dev = ["Cython (>=0.29.24,<0.30.0)", "pytest (>=6.0)", "Sphinx (>=4.1.2,<4.2.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0.15.3)"]
-docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)"]
-test = ["pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0.15.3)"]
+dev = ["Cython (>=0.29.24,<0.30.0)", "Sphinx (>=4.1.2,<4.2.0)", "flake8 (>=3.9.2,<3.10.0)", "pycodestyle (>=2.7.0,<2.8.0)", "pytest (>=6.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "uvloop (>=0.15.3)"]
+docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)"]
+test = ["flake8 (>=3.9.2,<3.10.0)", "pycodestyle (>=2.7.0,<2.8.0)", "uvloop (>=0.15.3)"]
 
 [[package]]
 name = "attrs"
-version = "21.4.0"
+version = "22.1.0"
 description = "Classes Without Boilerplate"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.5"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
-docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
+dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy (>=0.900,!=0.940)", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "sphinx", "sphinx-notfound-page", "zope.interface"]
+docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
+tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "zope.interface"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy (>=0.900,!=0.940)", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "beautifulsoup4"
@@ -125,7 +125,7 @@ platformdirs = ">=2"
 tomli = ">=0.2.6,<2.0.0"
 typing-extensions = [
     {version = ">=3.10.0.0", markers = "python_version < \"3.10\""},
-    {version = "!=3.10.0.1", markers = "python_version >= \"3.10\""},
+    {version = ">=3.10.0.0,<3.10.0.1 || >3.10.0.1", markers = "python_version >= \"3.10\""},
 ]
 
 [package.extras]
@@ -152,7 +152,7 @@ optional = false
 python-versions = ">=3.5.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -175,7 +175,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "colorlog"
-version = "6.6.0"
+version = "6.7.0"
 description = "Add colours to the output of Python's logging module."
 category = "main"
 optional = false
@@ -196,10 +196,10 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-all = ["Sphinx (>=3)", "sphinx-rtd-theme (>=0.2)", "check-manifest (>=0.42)", "mock (>=1.3.0)", "pytest-cov (>=2.10.1)", "pytest-isort (>=1.2.0)", "sphinx (>=3)", "tox (>=3.7.0)", "numpy (>=1.13.0)", "numpy (>=1.15.0)", "numpy (>=1.18.0)", "pytest (==5.4.3)", "pytest-pycodestyle (>=2)", "pytest-pydocstyle (>=2)", "pytest (>=6)", "pytest-pycodestyle (>=2.2.0)", "pytest-pydocstyle (>=2.2.0)", "numpy (>=1.20.0)"]
+all = ["Sphinx (>=3)", "check-manifest (>=0.42)", "mock (>=1.3.0)", "numpy (>=1.13.0)", "numpy (>=1.15.0)", "numpy (>=1.18.0)", "numpy (>=1.20.0)", "pytest (==5.4.3)", "pytest (>=6)", "pytest-cov (>=2.10.1)", "pytest-isort (>=1.2.0)", "pytest-pycodestyle (>=2)", "pytest-pycodestyle (>=2.2.0)", "pytest-pydocstyle (>=2)", "pytest-pydocstyle (>=2.2.0)", "sphinx (>=3)", "sphinx-rtd-theme (>=0.2)", "tox (>=3.7.0)"]
 docs = ["Sphinx (>=3)", "sphinx-rtd-theme (>=0.2)"]
 numpy = ["numpy (>=1.13.0)", "numpy (>=1.15.0)", "numpy (>=1.18.0)", "numpy (>=1.20.0)"]
-tests = ["check-manifest (>=0.42)", "mock (>=1.3.0)", "pytest-cov (>=2.10.1)", "pytest-isort (>=1.2.0)", "sphinx (>=3)", "tox (>=3.7.0)", "pytest (==5.4.3)", "pytest-pycodestyle (>=2)", "pytest-pydocstyle (>=2)", "pytest (>=6)", "pytest-pycodestyle (>=2.2.0)", "pytest-pydocstyle (>=2.2.0)"]
+tests = ["check-manifest (>=0.42)", "mock (>=1.3.0)", "pytest (==5.4.3)", "pytest (>=6)", "pytest-cov (>=2.10.1)", "pytest-isort (>=1.2.0)", "pytest-pycodestyle (>=2)", "pytest-pycodestyle (>=2.2.0)", "pytest-pydocstyle (>=2)", "pytest-pydocstyle (>=2.2.0)", "sphinx (>=3)", "tox (>=3.7.0)"]
 
 [[package]]
 name = "frozenlist"
@@ -211,39 +211,39 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "hikari"
-version = "2.0.0.dev108"
+version = "2.0.0.dev112"
 description = "A sane Discord API for Python 3 built on asyncio and good intentions"
 category = "main"
 optional = false
-python-versions = ">=3.8.0,<3.11"
+python-versions = ">=3.8.0,<3.12"
 
 [package.dependencies]
 aiohttp = ">=3.8,<4.0"
-attrs = ">=21.4,<22.0"
-colorlog = ">=6.6,<7.0"
+attrs = ">=22.1,<23.0"
+colorlog = ">=6.7,<7.0"
 multidict = ">=6.0,<7.0"
 
 [package.extras]
 server = ["pynacl (>=1.5,<2.0)"]
-speedups = ["aiodns (>=3.0,<4.0)", "cchardet (>=2.1,<3.0)", "Brotli (>=1.0,<2.0)", "ciso8601 (>=2.2,<3.0)"]
+speedups = ["aiohttp[speedups] (>=3.8,<4.0)", "ciso8601 (>=2.2,<3.0)"]
 
 [[package]]
 name = "hikari-lightbulb"
-version = "2.2.1"
+version = "2.2.5"
 description = "A simple to use command handler for Hikari"
 category = "main"
 optional = false
-python-versions = ">=3.8.0,<3.11"
+python-versions = ">=3.8.0,<3.12"
 
 [package.dependencies]
-hikari = ">=2.0.0.dev107,<2.1.0"
+hikari = ">=2.0.0.dev111,<2.1.0"
 
 [package.extras]
-crontrigger = ["croniter (>=1.3.4,<1.4.0)", "types-croniter (>=1.0.8,<1.1.0)"]
+crontrigger = ["croniter (>=1.3.7,<1.4.0)", "types-croniter (>=1.3.2,<1.4.0)"]
 
 [[package]]
 name = "hikari-miru"
-version = "1.1.1"
+version = "1.1.2"
 description = "An alternative component handler for hikari, inspired by discord.py's views."
 category = "main"
 optional = false
@@ -251,7 +251,7 @@ python-versions = ">=3.8.0,<3.11"
 
 [package.dependencies]
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
-hikari = ">=2.0.0.dev106"
+hikari = ">=2.0.0.dev110"
 
 [package.extras]
 docs = ["furo (>=2022.1.2,<2022.2.0)", "sphinx (==4.4.0)"]
@@ -281,14 +281,14 @@ optional = false
 python-versions = ">=3.6.1,<4.0"
 
 [package.extras]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
-requirements_deprecated_finder = ["pipreqs", "pip-api"]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
+pipfile-deprecated-finder = ["pipreqs", "requirementslib"]
 plugins = ["setuptools"]
+requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "lavasnek-rs"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "A lavalink-rs wrapper for any python async library"
 category = "main"
 optional = false
@@ -310,8 +310,8 @@ beautifulsoup4 = ">=4.6.0"
 requests = ">=2.20.0"
 
 [package.extras]
-checks = ["tox (>=3.2,<4.0)", "doc8", "flake8", "flake8-bugbear", "pygments"]
-dev = ["sphinx (>=3.3,<4.0)", "sphinx-rtd-theme", "tox (>=3.2,<4.0)", "doc8", "flake8", "flake8-bugbear", "pygments"]
+checks = ["doc8", "flake8", "flake8-bugbear", "pygments", "tox (>=3.2,<4.0)"]
+dev = ["doc8", "flake8", "flake8-bugbear", "pygments", "sphinx (>=3.3,<4.0)", "sphinx-rtd-theme", "tox (>=3.2,<4.0)"]
 docs = ["sphinx (>=3.3,<4.0)", "sphinx-rtd-theme"]
 
 [[package]]
@@ -359,7 +359,7 @@ optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
-test = ["ipaddress", "mock", "unittest2", "enum34", "pywin32", "wmi"]
+test = ["enum34", "ipaddress", "mock", "pywin32", "unittest2", "wmi"]
 
 [[package]]
 name = "pydantic"
@@ -420,7 +420,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "six"
@@ -487,11 +487,11 @@ pypika-tortoise = ">=0.1.4,<0.2.0"
 pytz = "*"
 
 [package.extras]
+accel = ["ciso8601", "orjson", "uvloop"]
 aiomysql = ["aiomysql"]
 asyncmy = ["asyncmy (>=0.2.4,<0.3.0)"]
 asyncpg = ["asyncpg"]
-accel = ["ciso8601", "orjson", "uvloop"]
-psycopg = ["psycopg"]
+psycopg = ["psycopg[binary,pool]"]
 
 [[package]]
 name = "typing-extensions"
@@ -511,7 +511,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
 [package.extras]
 brotli = ["brotlipy (>=0.6.0)"]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
@@ -529,7 +529,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "94ef7993bae068debe6b52dbd1519a82ae3b0d7a49cbb94cb609dbef106f09e9"
+content-hash = "3e1e2d240957f44feb485c3508d88ee38f3e38e0ce6cfa7b156fd31464f26a5a"
 
 [metadata.files]
 aerich = [
@@ -651,8 +651,8 @@ asyncpg = [
     {file = "asyncpg-0.25.0.tar.gz", hash = "sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540"},
 ]
 attrs = [
-    {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
-    {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
+    {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
+    {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
@@ -679,8 +679,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 colorlog = [
-    {file = "colorlog-6.6.0-py2.py3-none-any.whl", hash = "sha256:351c51e866c86c3217f08e4b067a7974a678be78f07f85fc2d55b8babde6d94e"},
-    {file = "colorlog-6.6.0.tar.gz", hash = "sha256:344f73204009e4c83c5b6beb00b3c45dc70fcdae3c80db919e0a4171d006fde8"},
+    {file = "colorlog-6.7.0-py2.py3-none-any.whl", hash = "sha256:0d33ca236784a1ba3ff9c532d4964126d8a2c44f1f0cb1d2b0728196f512f662"},
+    {file = "colorlog-6.7.0.tar.gz", hash = "sha256:bd94bd21c1e13fac7bd3153f4bc3a7dc0eb0974b8bc2fdf1a989e474f6e582e5"},
 ]
 dictdiffer = [
     {file = "dictdiffer-0.9.0-py2.py3-none-any.whl", hash = "sha256:442bfc693cfcadaf46674575d2eba1c53b42f5e404218ca2c2ff549f2df56595"},
@@ -748,16 +748,16 @@ frozenlist = [
     {file = "frozenlist-1.3.0.tar.gz", hash = "sha256:ce6f2ba0edb7b0c1d8976565298ad2deba6f8064d2bebb6ffce2ca896eb35b0b"},
 ]
 hikari = [
-    {file = "hikari-2.0.0.dev108-py3-none-any.whl", hash = "sha256:bc78e5c753f0b87ae24e1a644a2e4d01d08d5ed35cbaca0f160da5283a589785"},
-    {file = "hikari-2.0.0.dev108.tar.gz", hash = "sha256:d13cfcd0e3732185fa3048b5d9fd8b6078b5dbb0df7820ba7e3e55083bf9d4b5"},
+    {file = "hikari-2.0.0.dev112-py3-none-any.whl", hash = "sha256:cd56d2bef9422838458b4908e609842fe7c4bed3a58fe4084204836883969033"},
+    {file = "hikari-2.0.0.dev112.tar.gz", hash = "sha256:fe3f4f860f06ea97c73061371f104d5becb6de8d7dd4b1c1b0c76f131f8d69df"},
 ]
 hikari-lightbulb = [
-    {file = "hikari-lightbulb-2.2.1.tar.gz", hash = "sha256:77c543dfec286b21ce4382bb5ede7a3106bbcab5ae43f41a1dc921b5e2e7e3af"},
-    {file = "hikari_lightbulb-2.2.1-py3-none-any.whl", hash = "sha256:2fafc1486e3bb187f7bd2c8f5fc1b7fee29ca29addcaab638ebc981cbff576a0"},
+    {file = "hikari-lightbulb-2.2.5.tar.gz", hash = "sha256:4679dbaf3612e98ab6579e04a07b5812e571df9c3a32fb4d6df659ca1b03c11f"},
+    {file = "hikari_lightbulb-2.2.5-py3-none-any.whl", hash = "sha256:030458b7b010e401e9fe1872b5983169215641220a8acd5a348ef14a24f76ae4"},
 ]
 hikari-miru = [
-    {file = "hikari-miru-1.1.1.tar.gz", hash = "sha256:7d9ff975546e963cb0b3f234d3396990dc20d0569a70f42135c3b8a16880bd20"},
-    {file = "hikari_miru-1.1.1-py3-none-any.whl", hash = "sha256:f5aec9b7ce3672433d71e1076f64384e13ac24d687d667bd5c9db4ee38185aa0"},
+    {file = "hikari-miru-1.1.2.tar.gz", hash = "sha256:7beb4322d6246728a0581aef6443e5eabb569c9b5b3bd84d10a4cd0ac0bc81fd"},
+    {file = "hikari_miru-1.1.2-py3-none-any.whl", hash = "sha256:4a88501724abb29369ffa113152d8abfef537cddc8b8b0cbb8e9d132d5ff40d6"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
@@ -772,40 +772,40 @@ isort = [
     {file = "isort-5.10.1.tar.gz", hash = "sha256:e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"},
 ]
 lavasnek-rs = [
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e90ec88f94d13407aa0af09e82daca16344ae03204f6d31b583aded9b36bd71d"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:7ae586fe7c583e209a2310f19b1a841d6ebb12d03405978545333520057cfdc2"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a9c10b99d51740522154af0868cdfadb010d4bd07048cb3beb4a8f49afc52834"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f7dbe15e0b391850b06b12115870c4377b270ff11e36f54e3e10a1e15008541"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:57d864df136ee828499b4efcc1ad980e37133cba48acc23278713646277488c2"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:21f7c4dfbb08123257e490fb5ac48cfe622d4c3273dcf4edc551e504903a12ce"},
-    {file = "lavasnek_rs-0.1.0a4-cp310-cp310-win_amd64.whl", hash = "sha256:28c0ea0b9c04993b8cc6cce421e11667050c2b024aa5493204727c31e7d82b35"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:e1de22f9e10ba6a46f9371242b9f2edbf50fb6ef554cd04dd687d8c92bdd159d"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:18f646f2c5004b93e22e143c6aa498c549a22836114a4f501ae2370818a68912"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b0db001af8f6eb10cdaf530674b15c5f90d48972111449c2087f3643b3088a02"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-musllinux_1_1_aarch64.whl", hash = "sha256:d9d896643873052c0e749908caaf6b104b7fba969698f88ddda1a2c7bf98ce05"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-musllinux_1_1_x86_64.whl", hash = "sha256:7a5e3a77b037c1bed7d13913b083d4c19ed769d44c50ec3e40a68c30e8b69f8e"},
-    {file = "lavasnek_rs-0.1.0a4-cp36-cp36m-win_amd64.whl", hash = "sha256:3e32758fad1abaae75cc20e18c696ff8786e14c5ddff8a801d526e037a53d3e0"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:4150425dd6112100460aa975b9d753fd905f49d906dc72b23c003d73f7d5ac29"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e8c07c18223a0ad6d3351230d9874d2496371fb2efbd02737edf5e926a589e23"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:54d4c30e0e0ead8317fe91bb47029ceb3ea4106d8a24e1cbad66105b35fc017b"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:6f041c47081427cc759103e000ac01c7673cee672dd551a3800eeb4a6d74f2fe"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:ca685c21982fc16d84377c413df8ce8ba95d5f163c5f57b4a30eb5598a9070ab"},
-    {file = "lavasnek_rs-0.1.0a4-cp37-cp37m-win_amd64.whl", hash = "sha256:e38edc01c40d93d9e04d6857a014b2403b2476d7714e5201cd1d83affe8ed34d"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:1aa4d5f1a00d6d902b0454652966b4073c791a6e1ed413b7f214f996520255f3"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:1866141068309ed2fa6d0bbe7294b90f4beb155b4428bb5876fac02988706722"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7e3dddcb021d11154219c56591311bd2d359f4ef8405531cc2a25b06a9a841d7"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7bc3ef51410c87264ec583baeb14361b2495b6ec88b195caa8534b9cb757edea"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:a66921e131e56b35dde5ff8a5f5fe611471e0894ad104e6653fe31910862ba2e"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:5a86c8445ca60dd7ad717a54801f46b5da585131ff8f895d285e13c049b0f050"},
-    {file = "lavasnek_rs-0.1.0a4-cp38-cp38-win_amd64.whl", hash = "sha256:78e55bab850d1620daa3e6353cb23333cdad910d252f903ce7d1f1889c9b31db"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6414f650cca5945b671cd899b7f85189d99a3d8040c707e68de2a8aec7003d31"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:811b67476b6c7a1fef734feafef5ec692ce218e60a63911a3220a25d33f10633"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5f2ae07832b6b1577e8ad6988ec9d9e8e0f422a5a0d366b33bd263a78d64f24d"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:03dea77b695b02b4e7e8903b1ea85e1ee961f621a06e6375fbdc20cb3e2c4fd5"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:681c89d63ee39df83f1bc49303c11659503303977d22b75e6b5faeafc4776567"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:9e8ec46972de5e8bce22db471d9a8251d9a2e4829163a457f3744c85ca87697e"},
-    {file = "lavasnek_rs-0.1.0a4-cp39-cp39-win_amd64.whl", hash = "sha256:13b9db7271b01f0007f111bad52675f47d4c86f5eeb8c2327fc8e890c44941c7"},
-    {file = "lavasnek_rs-0.1.0a4.tar.gz", hash = "sha256:2612c90dd3c380d440a9000c48b185d87334185e9f4f66b57e7d44838e261974"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ad0184853385fcbc45cd26ac18cfe4a1e56f5990c603a2232fd405d25ba52bd0"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:50845659de9b0aa797660d779095f7fd3368fba6c30b1ee182a099b339d658cd"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:635158045375c6fa032eddda4919db83470c6f400d9dcc07bd4286230bf94cda"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-manylinux2014_armv7l.whl", hash = "sha256:4d07c860fe0cf5a3216ab39c058b2e6ab8f4e71a001a04156262d6e103940418"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd4ec1e8eadc5ea4276a40560b13d59865e158e9619023cee9ce18b1d9666e7e"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:94336186d8057801225d44f200daac29c39fdbde22a86896c9897d8d2e64072e"},
+    {file = "lavasnek_rs-0.1.0a5-cp310-cp310-win_amd64.whl", hash = "sha256:00a391b0619c3769cc4469003fd186356d5305c1b090a483c868509015ebe964"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:674445be777a76ae3329c33def14f960cdf3de6e9656933be5b192f6b0bade54"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:f08ffea1bc172192b59269b7a0d97cf34df212d87e7f091b2730869bab2b5994"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-manylinux2014_armv7l.whl", hash = "sha256:3ff45f52a51307e90fc3551751621f42d904a4a00f782367e7ef51ecf17930b4"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:67422d7b3d68088f55933b5e6c566552eef32bea48cc6de9133114acce7107ee"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-musllinux_1_1_x86_64.whl", hash = "sha256:cdac523fa59e55941a4d8273e5f852652353c994ed1913cb21a0aa16fc1695fc"},
+    {file = "lavasnek_rs-0.1.0a5-cp36-cp36m-win_amd64.whl", hash = "sha256:a9eabfb10824e9badd9158db746a95c6cb85aa921d301f85c66f692964315e69"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:2943863fbd7f2ba8bd66eec74ac7e803e837a5fb4827e9dd5b3c040c0e8c38db"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:5a5f0f31ea002bba94e70cd5cf89c4ee8123ed07dcce5b9ad8f267438a51a3c2"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-manylinux2014_armv7l.whl", hash = "sha256:1a6d58d0073ee1d1fb676e57c73e7c0679d07a5e39d3b83dd100ca84da09cec7"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ce044fb0fbb5747c729656030aa528743cf619600b0943d4b901b1cf77455a79"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:86e7d05fb12c37821947b3fb31540118f72f6324a258ed4c2ffea10ccd386271"},
+    {file = "lavasnek_rs-0.1.0a5-cp37-cp37m-win_amd64.whl", hash = "sha256:ee8c9b69a3367b574bb6c2f07686b5c3e963680b622e92b7d63dce1e7b6b1da2"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:32a0e99db4f7f1659b165e507606357cb897e396553ad46b53de5e0fbc66419a"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:e1b700bbe955196eec01afc6a0486d9b553a89231b849142169fd0d027269b54"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:c7cbb4727e723eb7800dc4281de8d174e160056f4112d4887f3116a513ecd80d"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-manylinux2014_armv7l.whl", hash = "sha256:2b1c8dbdff80639cb75ce0eafebcd5fd97a7047b144e8d3f9a51f37d9a53fb53"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b9f35434bdc0c19183c3596615dc114bb70ea585ec8fbba153e63c3cea32ed07"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:14229d02b44dab47aa1e2126172ec13e0c856f0b7f0c686a6a06a7c859e6d538"},
+    {file = "lavasnek_rs-0.1.0a5-cp38-cp38-win_amd64.whl", hash = "sha256:9c2b6801bbeed616b2c393b72977956b4366158c4c851203a1fdb49d6d7508dd"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3bd448d5424a5e03fa24841e0d1d8b8103751e1094319301bd7151e8e1b11ad2"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:f23801ac4d4b585c315600ddcfa4bcbbe304d5be785f413a52516ffc5abe85fe"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:1ef86871ec6382838aca02e05b50102ddfeba44ba08356d8d9a69465ecae9d29"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-manylinux2014_armv7l.whl", hash = "sha256:03d4978512f313075221cc3a887bfdf1015958cd05e26a071a12364de8392ef0"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:07981d0fb756f00ff355e6b8fb4c2300e7257f85dcb02a29309cf7f9aa273dce"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:bc94ad3a7d2290ac284affe94584a955555e8081d26d7545d504715fed91d9a4"},
+    {file = "lavasnek_rs-0.1.0a5-cp39-cp39-win_amd64.whl", hash = "sha256:41e3d85ec4b5a54e6b1c829f211404aea911108832e426216040d703e1d5df5d"},
+    {file = "lavasnek_rs-0.1.0a5.tar.gz", hash = "sha256:797ca94d5fa0226d892b8f445a8ce0fc5b2f4c2d7a187b7ad2d736ea1e63c956"},
 ]
 lyricsgenius = [
     {file = "lyricsgenius-3.0.1-py3-none-any.whl", hash = "sha256:145df7d79e6b6ebe7ff6da9ed08c0cb43b251bb88f859339224b20e3f8399b05"},
